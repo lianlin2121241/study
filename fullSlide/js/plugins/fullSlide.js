@@ -1,4 +1,22 @@
 (function($){
+	var supports = (function() { 
+		var div = document.createElement('div'), 
+		vendors = 'Khtml O Moz Webkit'.split(' '), 
+		len = vendors.length; 
+		return function(prop) { 
+			if ( prop in div.style ) return true; 
+			if ('-ms-' + prop in div.style) return true; 
+			prop = prop.replace(/^[a-z]/, function(val) { 
+				return val.toUpperCase(); 
+			}); 
+			while(len--) { 
+				if ( vendors[len] + prop in div.style ) { 
+					return true; 
+				} 
+			} 
+			return false; 
+		}; 
+	})(); 
 	var fullSlide=(function(){
 		function fullSlide(elem,options){
 			this.elem=elem;
@@ -8,10 +26,11 @@
 		fullSlide.prototype={
 			init:function(){
 				var self=this;
-				self.sections=self.elem;
+				self.sections=self.elem.find(self.settings.sectionOpt.sections);
 				self.section=self.elem.find(self.settings.sectionOpt.section);
 				self.count=self.section.length;
 				self.index=self.settings.index<self.count?self.settings.index:0;
+				self.canCss3=supports("transform3");
 				self.pw=self.elem.width();
 				self.ph=self.elem.height();
 				self.canAnimate=true;
@@ -20,18 +39,24 @@
 			},
 			prev:function(){
 				var self=this;
-				if (self.index==0) {
+				if (self.index==0&&!self.settings.loop) {
 					return;
-				};
-				self.index--;
+				}else if(self.index==0&&self.settings.loop){
+					self.index=self.count-1;
+				}else{
+					self.index--;
+				}
 				self.canAnimate=false;
 			},
 			next:function(){
 				var self=this;
-				if (self.index==self.count-1) {
+				if (self.index==self.count-1&&!self.settings.loop) {
 					return;
-				};
-				self.index++;
+				}else if (self.index==self.count-1&&self.settings.loop) {
+					self.index=0;
+				}else{
+					self.index++;
+				}
 				self.canAnimate=false;
 			},
 			translate:function(){
@@ -41,10 +66,25 @@
 				}else{
 					self.prev();
 				}
-				self.sections.css({
-					"transform":self.settings.direction=="h"?"translateX("+-self.pw*self.index+"px)":"translateY("+-self.ph*self.index+"px)",
-					"transition":"all "+self.settings.duration+"ms "+self.settings.timing
-				});
+				self.fullAnimate();
+			},
+			fullAnimate:function(){
+				var self=this;
+				if(self.canCss3){
+					self.sections.css({
+						"transform":self.settings.direction=="h"?"translateX("+-self.pw*self.index+"px)":"translateY("+-self.ph*self.index+"px)",
+						"transition":"all "+self.settings.duration+"ms "+self.settings.timing
+					});
+				}else{
+					var cssObj=self.settings.direction=="h"?{"marginLeft":-self.pw*self.index+"px"}:{"marginTop":-self.ph*self.index+"px"};
+					self.sections.animate(cssObj,self.settings.duration,function(){
+						self.canAnimate=true;
+						!!self.settings.callback&&self.settings.callback.call();
+					})
+				}
+				if(self.settings.pagination){
+					self.paginationPanel.find('li:eq('+self.index+')').addClass(self.settings.sectionOpt.paginationActive).siblings().removeClass(self.settings.sectionOpt.paginationActive);
+				}
 			},
 			show:function(){
 				var self=this;
@@ -53,6 +93,7 @@
 					for(i=0;i<self.count;i++){
 						paginationPanel.append('<li></li>');
 					}
+					self.paginationPanel=paginationPanel;
 					paginationPanel.addClass(self.settings.sectionOpt.paginationClass).appendTo(self.elem);
 					paginationPanel.find('li:eq('+self.index+')').addClass(self.settings.sectionOpt.paginationActive);
 				}
@@ -67,9 +108,14 @@
 					paginationPanel.addClass('pagination-v');
 					paginationPanel.css("marginTop",-paginationPanel.height()/2+"px");
 				}
-				self.sections.css({
-					"transform":self.settings.direction=="h"?"translateX("+-self.pw*self.index+"px)":"translateY("+-self.ph*self.index+"px)"
-				});
+				if(self.canCss3){
+					self.sections.css({
+						"transform":self.settings.direction=="h"?"translateX("+-self.pw*self.index+"px)":"translateY("+-self.ph*self.index+"px)"
+					});
+				}else{
+					var cssObj=self.settings.direction=="h"?{"marginLeft":-self.pw*self.index+"px"}:{"marginTop":-self.ph*self.index+"px"};
+					self.sections.css(cssObj);
+				}
 			},
 			setDirection:function(e){
 				var self=this;
@@ -94,6 +140,11 @@
 				})
 				self.elem.on("webkitTransitionEnd otransitionend transitionend",function(e){
 					self.canAnimate=true;
+					!!self.settings.callback&&self.settings.callback.call();
+				})
+				self.paginationPanel.on("click","li",function(){
+					self.index=$(this).index();
+					self.fullAnimate();
 				})
 			}
 		}
@@ -119,10 +170,11 @@
 			paginationActive:"active"
 		},
 		pagination:false,
+		loop:false,
 		duration:500,
 		timing:"ease",
 		index:2,
-		direction:"v",
+		direction:"h",
 		callback:$.noop()
 	}
 })(jQuery)
