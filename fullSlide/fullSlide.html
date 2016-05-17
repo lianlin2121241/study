@@ -9,9 +9,38 @@
 	<script>
 		$(function(){
 			$(".container").fullSlide({
-				direction:"v",
+				direction:"h",
 				pagination:true,
-				loop:true
+				loop:true,
+				callback:function(){
+					console.log(this.index);
+					if(this.index==0){
+						//重新触发动画
+						var elementC=$(".section0 .content .country",this.elem)[0];
+						var elementB=$(".section0 .content .branch",this.elem)[0];
+						// -> removing the class
+						elementC.classList.remove("country");
+						  
+						// -> triggering reflow /* The actual magic */
+						// without this it wouldn't work. Try uncommenting the line and the transition won't be retriggered.
+						elementC.offsetWidth = elementC.offsetWidth;
+						  
+						// -> and re-adding the class
+						elementC.classList.add("country");
+
+						// -> removing the class
+						elementB.classList.remove("branch");
+						  
+						// -> triggering reflow /* The actual magic */
+						// without this it wouldn't work. Try uncommenting the line and the transition won't be retriggered.
+						elementB.offsetWidth = elementB.offsetWidth;
+						  
+						// -> and re-adding the class
+						elementB.classList.add("branch");
+
+						//$(".section0 .content .country").removeClass('country').addClass('country');
+					}
+				}
 			});
 		})
 	</script>
@@ -19,11 +48,55 @@
 <body>
 	<div class="container">
 		<div class="sections">
-			<div class="section section0"></div>
+			<div class="section section0">
+				<div class="content">
+					<p class="country">中华人民共和国</p>
+					<p class="branch">商务部</p>
+				</div>
+			</div>
 			<div class="section section1"></div>
 			<div class="section section2"></div>
 			<div class="section section3"></div>
 		</div>
 	</div>
+	<!-- <div class="container">
+		<div class="sections">
+			<div class="section section0">
+				<div class="content">
+					<p class="country">中华人民共和国</p>
+					<p class="branch">商务部</p>
+				</div>
+			</div>
+			<div class="section section1"></div>
+			<div class="section section2"></div>
+			<div class="section section3"></div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="sections">
+			<div class="section section0">
+				<div class="content">
+					<p class="country">中华人民共和国</p>
+					<p class="branch">商务部</p>
+				</div>
+			</div>
+			<div class="section section1"></div>
+			<div class="section section2"></div>
+			<div class="section section3"></div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="sections">
+			<div class="section section0">
+				<div class="content">
+					<p class="country">中华人民共和国</p>
+					<p class="branch">商务部</p>
+				</div>
+			</div>
+			<div class="section section1"></div>
+			<div class="section section2"></div>
+			<div class="section section3"></div>
+		</div>
+	</div> -->
 </body>
 </html>

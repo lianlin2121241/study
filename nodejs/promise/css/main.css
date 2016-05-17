@@ -1,0 +1,16 @@
+.ball{
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	margin: 10px 0px;
+	margin-left: 0px;
+}
+.ball0{
+	background: red;
+}
+.ball1{
+	background: green;
+}
+.ball2{
+	background: yellow;
+}
