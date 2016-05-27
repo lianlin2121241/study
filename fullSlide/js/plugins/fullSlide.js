@@ -186,6 +186,7 @@
 				elem=$(this);
 			if(!fullslide){
 				fullslide=new fullSlide(elem,options);
+                elem.data("data-fullslide",fullslide);
 			}
 			if(typeof options=="string"){
 				return fullslide[options]();

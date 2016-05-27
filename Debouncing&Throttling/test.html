@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Debouncing&Throttling</title>
+	<style>
+		.disable-hover{
+			pointer-events:none;
+		}
+		body:hover{
+			background-color: red;
+		}
+	</style>
+</head>
+<body style="height:2000px;">
+	<input type="text" id="testDebounce">
+</body>
+<script type="text/javascript">
+	//防抖
+	function debounce(fun,wait,immediate){
+		var timeout;
+		return function(){
+			var context=this,args=arguments;
+			var later=function(){
+				timeout=null;
+				!immediate&&fun.apply(context,args);
+			}
+			var canNow=immediate&&!timeout;
+			clearTimeout(timeout);
+			timeout=setTimeout(later,wait);
+			canNow&&fun.apply(context,args);
+		}
+	}
+
+	var inputDebounce=document.getElementById("testDebounce");
+	var debounceHandle=debounce(function(){
+		console.log("Success");
+	},500);
+	inputDebounce.addEventListener("input",debounceHandle,false);
+
+	//节流
+	function throttle(fun,wait,mustRun){
+		var startTime=new Date(),timeout;
+		return function(){
+			var curTime=new Date(),
+				context=this,
+				args=arguments;
+			clearTimeout(timeout);
+			if(curTime-startTime>mustRun){
+				fun.apply(context,args);
+				startTime=curTime;
+			}else{
+				timeout=setTimeout(fun,wait);
+			}
+		}
+	}
+	var throttleHandle=throttle(function(){
+		console.log("Success");
+	},500,1000);
+	window.addEventListener("resize",throttleHandle,false);
+
+	//requestAnimationFrame
+	var ticking=false;
+	function Scroll(){
+		if(!ticking){
+			requestAnimationFrame(ScrollHandle);
+			ticking=true;
+			document.body.className="disable-hover";
+		}
+	}
+	function ScrollHandle(){
+		console.log("Success");
+		ticking=false;
+		document.body.className="";
+	}
+	window.addEventListener("scroll",Scroll,false);
+</script>
+</html>
