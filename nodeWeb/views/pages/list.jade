@@ -1,0 +1,19 @@
+doctype
+html
+	head
+		meta(charset="utf-8")
+		title #{title}
+		script(src='http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js')
+		script(type='text/javascript').
+			$(function(){
+				$.ajax({
+					url: "/post",
+					type: "post",
+					data: {
+						id: "henry",
+						date: 30
+					}
+				});
+			})
+	body
+		h1 #{title}
