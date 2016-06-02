@@ -73,7 +73,7 @@ app.post("/admin/movie/new",function(req,res){
 				console.log(err);
 			}
 			_movie= _.extend(movie,movieObj);
-			_movie.save(function(err,movie){
+			_movie.save(function(err,mov	ie){
 				!!err&&console.log(err);
 				res.redirect("/movie/"+movie._id)
 			})
