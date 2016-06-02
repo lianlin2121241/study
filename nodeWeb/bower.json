@@ -1,0 +1,26 @@
+{
+  "name": "imooc",
+  "homepage": "https://github.com/lianlin2121241/study",
+  "authors": [
+    "limingle"
+  ],
+  "description": "imooc",
+  "main": "app.js",
+  "keywords": [
+    "imooc"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/javascripts/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.4"
+  }
+}

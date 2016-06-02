@@ -7,7 +7,7 @@ var Movie=require("./models/movie");
 var port=process.env.ROPT||3000;
 var app=express();
 app.use(bodyParser.urlencoded({extended:false}));
-app.use(express.static(path.join(__dirname,"bower_components")));
+app.use(express.static(path.join(__dirname,"public")));
 
 app.set("views","./views/pages");
 app.set("view engine","jade");
@@ -73,7 +73,7 @@ app.post("/admin/movie/new",function(req,res){
 				console.log(err);
 			}
 			_movie= _.extend(movie,movieObj);
-			_movie.save(function(err,mov	ie){
+			_movie.save(function(err,movie){
 				!!err&&console.log(err);
 				res.redirect("/movie/"+movie._id)
 			})
@@ -158,6 +158,18 @@ app.get("/admin/update/:id",function(req,res){
 				title:"imooc 后台管理程序",
 				movie:movie
 			})
+		})
+	}
+})
+app.delete("/admin/list",function(req,res){
+	var id=req.query.id;
+	if(id){
+		Movie.remove({_id:id},function(err,movie){
+			if(err){
+				console.log(err);
+			}else{
+				res.json({success:1});
+			}
 		})
 	}
 })
