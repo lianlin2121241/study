@@ -1,0 +1,7 @@
+﻿1、$.Deferred()，链式异步方法
+2、new Audio()
+3、CSS3应用
+4、requireJS模块化加载
+5、面向对象编程方式，实现继承
+6、transition.js实现过度效果
+7、等比缩放

@@ -1,0 +1,519 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+html,body{
+    height: 100%;
+    overflow: hidden;
+}
+/********************  场景样式开始  *********************/
+.scenario-panel{
+    width: 300%;
+    height: 100%;
+}
+.scenario{
+    width: 33.33%;
+    height: 100%;
+    float: left;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: 0px 100%;
+    position: relative;
+    overflow: hidden;
+}
+.scenario .head{
+    /*height:-moz-calc(100% - 256px);
+    height:-webkit-calc(100% - 256px);
+    height: calc(100% - 256px);*/
+    height: 71.6%;
+}
+.scenario .middle{
+    height: 13.1%;
+}
+.scenario .foot{
+    height: 15.3%;
+}
+.scenario1{
+
+}
+.scenario1 .head,.scenario1 .middle,.scenario1 .foot,
+.scenario3 .head,.scenario3 .middle,.scenario3 .foot{
+    background-size: 100% 100%;
+}
+.scenario1 .head{
+    background-image: url("../images/background/a_background_top.png");
+}
+.scenario1 .middle{
+    background-image: url("../images/background/a_background_middle.png");
+}
+.scenario1 .foot{
+    background-image: url("../images/background/a_background_botton.png");
+}
+.scenario2{
+    background-image: url("../images/QixiB-dark.png");
+}
+.scenario2.bright{
+    background-image: url("../images/QixiB-bright.png");
+}
+.scenario3{
+
+}
+.scenario3 .head{
+    background-image: url("../images/background/c_background_top.png");
+}
+.scenario3 .middle{
+    background-image: url("../images/background/c_background_middle.png");
+}
+.scenario3 .foot{
+    background-image: url("../images/background/c_background_botton.png");
+}
+/********************  场景样式结束  *********************/
+
+/********************  场景1样式开始  *********************/
+.sun{
+    width: 201px;
+    height: 201px;
+    background: url("../images/sun.png") no-repeat 0px 0px;
+    position: absolute;
+    top: -40px;
+    left: 40%;
+}
+.cloud1{
+    width: 181px;
+    height: 101px;
+    background: url("../images/cloud1.png") no-repeat 0px 0px;
+    position: absolute;
+    left: -5%;
+    top: 14%;
+}
+.cloud2{
+    width: 301px;
+    height: 140px;
+    background: url("../images/cloud2.png") no-repeat 0px 0px;
+    position: absolute;
+    right: -5%;
+    top: 0px;
+}
+.sunAnimate{
+    -webkit-animation: sun 30s;
+    -o-animation: sun 30s;
+    animation: sun 30s;
+}
+.cloud1Animate{
+    -webkit-animation: cloud1 30s;
+    -o-animation: cloud1 30s;
+    animation: cloud1 30s;
+}
+.cloud2Animate{
+    -webkit-animation: cloud2 30s;
+    -o-animation: cloud2 30s;
+    animation: cloud2 30s;
+}
+@keyframes sun {
+    0%{
+        transform: translateX(0) translateY(0);
+    }
+    100%{
+        transform: translateX(-2000px) translateY(400px);
+    }
+}
+@keyframes cloud1 {
+    0%{
+        left: -5%;
+    }
+    100%{
+        left:100%;
+    }
+}
+@keyframes cloud2 {
+    0%{
+        right:-5%;
+    }
+    100%{
+        right:100%
+    }
+}
+/********************  场景1样式结束  *********************/
+
+/********************  场景2样式开始  *********************/
+.scenario2-preload{
+    background-image: url("../images/QixiB-bright.png");
+    height: 0px;
+}
+.shop{
+    width: 39.5%;
+    height: 35.5%;
+    position: absolute;
+    top: 36.5%;
+    left: 29%;
+}
+.door{
+    width: 32%;
+    height: 68%;
+    position: absolute;
+    top: 32%;
+    left: 58.5%;
+    overflow: hidden;
+}
+.door-left,.door-right{
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+}
+.door-left{
+    background: url("../images/door-left.png") no-repeat 0px 0px;
+    background-size: 100% 100%;
+    left: 0%;
+}
+.door-right{
+    background: url("../images/door-right.png") no-repeat 0px 0px;
+    background-size: 100% 100%;
+    left: 50%;
+}
+.bird{
+    width: 91px;
+    height: 71px;
+    background: url("../images/bird.png") no-repeat 0px 0px;
+    position: absolute;
+    top: 10%;
+    right: -91px;
+}
+.birdFly{
+    -webkit-animation: birdFly 400ms step-start infinite;
+    -o-animation: birdFly 400ms step-start infinite;
+    animation: birdFly 400ms step-start infinite;
+}
+@keyframes birdFly {
+    0%{
+        background-position: 0px 0px;
+    }
+    25%{
+        background-position: -91px 0px;
+    }
+    50%{
+        background-position: -182px 0px;
+    }
+    100%{
+        background-position: 0px 0px;
+    }
+}
+/********************  场景2样式结束  *********************/
+
+/********************  场景3样式开始  *********************/
+.bridge-bottom{
+    width: 41%;
+    height: 24%;
+    position: absolute;
+    top:76%;
+    left: 29.5%;
+    overflow: hidden;
+}
+.water_1,.water_2,.water_3,.water_4{
+    position: absolute;
+    background:url("../images/water.png") no-repeat 0px 0px ;
+    -webkit-animation: water 40s alternate linear infinite;
+    -o-animation: water 40s alternate linear infinite;
+    animation: water 40s alternate linear infinite;
+}
+.water_1{
+    width: 131px;
+    height: 15px;
+    top: 13%;
+    left: 35%;
+    background-position: -261px 0px;
+}
+.water_2{
+    width: 161px;
+    height: 9px;
+    top: 28%;
+    left: 45%;
+    background-position: -693px 0px;
+    animation-delay: 1s;
+}
+.water_3{
+    width: 261px;
+    height: 29px;
+    top: 50%;
+    left: 15%;
+    background-position: 0px 0px;
+    animation-delay: 2s;
+}
+.water_4{
+    width: 301px;
+    height: 12px;
+    top: 75%;
+    left: 30%;
+    background-position: -392px 0px;
+    animation-delay: 3s;
+}
+
+.starts{
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+}
+.start{
+    position: absolute;
+    width: 30px;
+    height: 31px;
+    list-style: none;
+    background: url("../images/stars.png") no-repeat 0px 0px;
+    -webkit-animation: start 3s ease-in-out infinite;
+    -o-animation: start 3s ease-in-out infinite;
+    animation: start 3s ease-in-out infinite;
+}
+.start-1{
+    top: 20%;
+    left: 30%;
+}
+.start-2{
+    top: 15%;
+    left: 20%;
+}
+.start-3{
+    top: 25%;
+    left: 85%;
+}
+.start-4{
+    top: 30%;
+    left: 70%;
+}
+.start-5{
+    top: 25%;
+    left: 20%;
+}
+.start-6{
+    top: 10%;
+    left: 65%;
+}
+.logo{
+    width: 185px;
+    height: 81px;
+    background: url("../images/logo.png") no-repeat 0px 0px;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    margin-left: -92px;
+    display: none;
+}
+.logo-in{
+    display: block;
+    -webkit-animation: logoIn ease-out 1s;
+    -o-animation: logoIn ease-out 1s;
+    animation: logoIn ease-out 1s;
+}
+.logo-shake{
+    -webkit-animation: logoShake ease 0.5s;
+    -o-animation: logoShake ease 0.5s;
+    animation: logoShake ease 0.5s;
+}
+.snow-panel{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1000;
+}
+.snowbox{
+    width: 41px;
+    height: 41px;
+    background-size: cover;
+    position: absolute;
+    z-index: 1001;
+    top: -41px;
+}
+.snow-rotate{
+    -webkit-animation: snowAnimate 20s;
+    -o-animation: snowAnimate 20s;
+    animation: snowAnimate 20s;
+}
+
+@keyframes water {
+    0%,100%{
+        transform: translate3d(0,0,0);
+    }
+    10%,30%,50%,70%,90%{
+        transform: translate3d(-30px,0,0);
+    }
+    20%,40%,60%,80%{
+        transform: translate3d(30px,0,0);
+    }
+}
+@keyframes start {
+    0%,100%{
+        opacity: 1;
+    }
+    60%{
+        opacity: 0;
+    }
+}
+@keyframes logoIn {
+    0%{
+        transform: translate3d(100%,0,0) skewX(-30deg);
+        opacity: 0;
+    }
+    60%{
+        transform: skewX(20deg);
+        opacity: 1;
+    }
+    80%{
+        transform: skewX(-5deg);
+        opacity: 1;
+    }
+    100%{
+        transform: none;
+        opacity: 1;
+    }
+}
+@keyframes logoShake {
+    0%,100%{
+        transform: translate3d(0,0,0);
+    }
+    10%,30%,50%,70%,90%{
+        transform: translate3d(-10px,0,0);
+    }
+    20%,40%,60%,80%{
+        transform: translate3d(10px,0,0);
+    }
+}
+@keyframes snowAnimate {
+    0%{
+        bottom: 100%;
+    }
+    50%{
+        transform: rotate(1080deg);
+    }
+    100%{
+        transform: rotate(0deg) translate3d(50px,50px,50px);
+    }
+}
+/********************  场景3样式结束  *********************/
+
+/********************  小男孩样式开始  *********************/
+.boy{
+    width: 151px;
+    height: 291px;
+    background:url("../images/boy.png") no-repeat;
+    position: absolute;
+    left: 20px;
+    bottom: 140px;
+}
+.boy-walk{
+    animation: boy 800ms steps(1,start) infinite ;
+}
+.has-flowers{
+    animation: boyHasFlowers 800ms steps(1,start) infinite ;
+}
+.pauseWalk{
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused;
+}
+.boyOriginal{
+    background-position: -150px -0px;
+}
+.boy.rotate{
+    -webkit-animation: boyRotate 850ms 1 step-start forwards;
+    -o-animation: boyRotate 850ms 1 step-start forwards;
+    animation: boyRotate 850ms 1 step-start forwards;   
+}
+@keyframes boy {
+    0%{
+        background-position: -604px 0px;
+    }
+    25%{
+        background-position: 0px -291px;
+    }
+    50%{
+        background-position: -151px -291px;
+    }
+    75%{
+        background-position: -302px -291px;
+    }
+    100%{
+        background-position: -604px 0px;
+    }
+}
+@keyframes boyHasFlowers {
+    0%{
+        background-position: -906px 0px;
+    }
+    25%{
+        background-position: -302px 0px;
+    }
+    50%{
+        background-position: -755px 0px;
+    }
+    75%{
+        background-position: -453px 0px;
+    }
+    100%{
+        background-position: -906px 0px;
+    }
+}
+@keyframes boyRotate {
+    0% {
+        background-position: -603px -291px;
+    }
+    16.7% {
+        background-position: -150px -0px;
+    }
+    33.4% {
+        background-position: -453px -291px;
+    }
+    50.1% {
+        background-position: -0px -0px;
+    }
+    66.8% {
+        background-position: -903px -291px;
+    }
+    83.5% {
+        background-position: -753px -291px;
+    }
+    100% {
+        background-position: -603px -291px;
+    }
+}
+/********************  小男孩样式结束  *********************/
+
+/********************  小女孩样式开始  *********************/
+.girl{
+    width: 151px;
+    height: 291px;
+    position: absolute;
+    background: url("../images/girl.png") no-repeat -755px 0px;
+}
+.girl.rotate{
+    -webkit-animation: girlRotate 850ms 1 step-start forwards;
+    -o-animation: girlRotate 850ms 1 step-start forwards;
+    animation: girlRotate 850ms 1 step-start forwards;
+}
+@keyframes girlRotate {
+    0% {
+        background-position: -604px -0px;
+    }
+    16.7% {
+        background-position: -151px -0px;
+    }
+    33.4% {
+        background-position: -906px -0px;
+    }
+    50.1% {
+        background-position: -0px -0px;
+    }
+    66.8% {
+        background-position: -302px -0px;
+    }
+    83.5% {
+        background-position: -453px -0px;
+    }
+    100% {
+        background-position: -604px -0px;
+    }
+}
+/********************  小女孩样式结束  *********************/
