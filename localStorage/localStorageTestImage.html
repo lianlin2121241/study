@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		function setImage (key,src) {
+			var img=document.createElement("img");
+//			img.setAttribute('crossOrigin', 'anonymous');
+			img.src=src;
+			img.onload=function(){
+				var canvas=document.createElement("canvas");
+				canvas.width=img.width;
+				canvas.height=img.height;
+				var ctx=canvas.getContext("2d");
+				ctx.drawImage(img,0,0);
+				var imagebase64=canvas.toDataURL("image/png");
+				localStorage.setItem(key,imagebase64);
+			}
+		}
+		function getImage (key) {
+			var imagebase64=localStorage.getItem(key);
+			var img=document.createElement("img");
+			document.getElementsByTagName("body")[0].appendChild(img);
+			img.src=imagebase64;
+		}
+		var imgsrc="http://www.imooc.com/static/img/common/logo.png";
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

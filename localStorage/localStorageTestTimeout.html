@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function setData(key,value){
+            var date=new Date().getTime();
+            localStorage.setItem(key,JSON.stringify({"data":value,"date":date}));
+        }
+        function getDate(key,outtime){
+            var nowDate=new Date().getTime();
+            var data=JSON.parse(localStorage.getItem(key));
+            if(nowDate-data.date>outtime){
+                console.log("timeout");
+            }else{
+                console.log(data.data);
+            }
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
