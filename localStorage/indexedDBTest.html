@@ -7,9 +7,9 @@
     <script>
         +(function (window) {
             window.indexedDB=window.indexedDB||
-                        window.mozIndexDB||
-                        window.webkitIndexDB||
-                        window.msIndexDB,
+                        window.mozIndexedDB||
+                        window.webkitIndexedDB||
+                        window.msIndexedDB,
             window.IDBTransaction=window.IDBTransaction||
                         window.mozIDBTransaction||
                         window.webkitIDBTransaction||
@@ -139,6 +139,24 @@
                         console.log(e);
                     }
                 },
+                //删除指定ID数据
+                deleteObjectStore: function (storeName,id) {
+                    try{
+                        if(!!db.db){
+                            var transaction=db.db.transaction(storeName,"readwrite");
+                            var store=transaction.objectStore(storeName);
+                            var storeRequest=store.delete(id);
+                            storeRequest.onsuccess=function(e){
+                                console.log("删除成功");
+                            }
+                            storeRequest.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
                 //清空数据
                 clearObjectStore: function (storeName) {
                     try{
@@ -213,7 +231,7 @@
                 fecthAllData:function(storeName){
                     try{
                         if(!!db.db){
-                            var transcation=db.db.transaction(storeName,"readwrite");
+                            var transcation=db.db.transaction([storeName],"readwrite");
                             var store=transcation.objectStore(storeName);
                             var request=store.openCursor();
                             request.onsuccess=function(e){
@@ -377,6 +395,9 @@
                         age:19
                     });
                 })
+                $("#deleteObjectStore").click(function(){
+                    app.db.deleteObjectStore("student",4);
+                })
                 $("#clearObjectStore").click(function(){
                     app.db.clearObjectStore("student");
                 })
@@ -384,7 +405,7 @@
                     app.db.getObjectById("student",3);
                 })
                 $("#getObjectByIndex").click(function(){
-                    app.db.getObjectByIndex("student","nameIndex","wangxin");
+                    app.db.getObjectByIndex("student","nameIndex","limingle");
                 })
                 $("#fecthAllData").click(function(){
                     app.db.fecthAllData("student");
@@ -412,6 +433,7 @@
     <button id="createIndex">创建索引</button>
     <button id="addObjectStore">添加学生信息</button>
     <button id="updateObjectStore">更新学生信息</button>
+    <button id="deleteObjectStore">删除学生信息</button>
     <button id="clearObjectStore">清空学生信息</button>
     <button id="getObjectById">获取学生信息byID</button>
     <button id="getObjectByIndex">获取学生信息byIndex</button>
