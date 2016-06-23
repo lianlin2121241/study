@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.js"></script>
+    <script>
+        +(function (window) {
+            window.indexedDB=window.indexedDB||
+                        window.mozIndexDB||
+                        window.webkitIndexDB||
+                        window.msIndexDB,
+            window.IDBTransaction=window.IDBTransaction||
+                        window.mozIDBTransaction||
+                        window.webkitIDBTransaction||
+                        window.msIDBTransaction,
+            window.IDBKeyRange=window.IDBKeyRange||
+                        window.mozIDBKeyRange||
+                        window.webkitIDBKeyRange||
+                        window.msIDBKeyRange;
+
+            var db={
+                dbName:"schoolManage",
+                version:7,
+                //创建database
+                createDatabase:function(){
+                    var openRequest=indexedDB.open(this.dbName,this.version);
+                    openRequest.onerror=function(e){
+                        console.log("Database error: "+e.target.errorCode);
+                    }
+                    openRequest.onsuccess=function(e){
+                        db.db= e.target.result;
+                        console.log(e.target)
+                    }
+                    openRequest.onupgradeneeded=function(e){
+                        db.db= e.target.result;
+                        console.log(e.target)
+                    }
+                },
+                //删除database
+                deleteDatabase:function(){
+                    var deleteRequest=indexedDB.deleteDatabase(this.dbName);
+                    deleteRequest.onsuccess=function(e){
+                        console.log("删除成功!");
+                    }
+                    deleteRequest.onerror=function(e){
+                        console.log("Database error: "+e.target.errorCode);
+                    }
+                },
+                //创建ObjectStore
+                createObjectStore:function(storeName){
+                    var openRequest=indexedDB.open(this.dbName,this.version);
+                    openRequest.onerror=function(e){
+                        console.log("Database error: "+e.target.errorCode);
+                    }
+                    openRequest.onsuccess=function(e){
+                        db.db= e.target.result;
+                        console.log(e.target)
+                    }
+                    openRequest.onupgradeneeded=function(e){
+                        db.db= e.target.result;
+                        var objectStore=db.db.createObjectStore(storeName,{keyPath:"id"});
+                        console.log(e.target)
+                    }
+                },
+                //创建索引
+                //创建索引必须在onupgradeneeded事件中进行，版本更新时一次创建
+                createIndex:function(storeName,indexArr){
+                    var openRequest=indexedDB.open(this.dbName,this.version);
+                    openRequest.onerror=function(e){
+                        console.log("Database error: "+e.target.errorCode);
+                    }
+                    openRequest.onsuccess=function(e){
+                        db.db= e.target.result;
+                        console.log(e.target)
+                    }
+                    openRequest.onupgradeneeded=function(e){
+                        db.db= e.target.result;
+                        var transactionE=e.target.transaction;//如果有数据表时必须有事务存在才能够添加，原因不明
+                        var objectStore=transactionE.objectStore(storeName);//如果有数据表则获取数据表//如果没有数据表创建数据表createObjectStore(storeName,{keyPath:"id"});
+                        indexArr.forEach(function(item,index){
+                            var transaction=transactionE||db.db.transaction(storeName);//如果有数据表时到循环的时候事务会清除，因此必须重新创建事务
+                            var createIndexRequest=objectStore.createIndex(item+"Index",item,{unique:false})
+                            createIndexRequest.onsuccess=function(e){
+                                console.log("设置索引成功,"+index);
+                                console.log(createIndexRequest);
+                            }
+                            createIndexRequest.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        })
+                        console.log(e.target)
+                    }
+                },
+                //添加数据
+                addObjectStore: function (storeName,data) {
+                    try{
+                        if(!!db.db){
+                            var transaction=db.db.transaction(storeName,"readwrite");
+                            var store=transaction.objectStore(storeName);
+                            data.forEach(function(item,index){
+                                var storeRequest=store.add(item);
+                                storeRequest.onsuccess=function(e){
+                                    console.log("添加成功,"+index);
+                                }
+                                storeRequest.onerror=function(e){
+                                    console.log("Database error: "+e.target.error);
+                                }
+                            })
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //更新数据
+                updateObjectStore: function (storeName,id,data) {
+                    try{
+                        if(!!db.db){
+                            var transaction=db.db.transaction(storeName,"readwrite");
+                            var store=transaction.objectStore(storeName);
+                            store.get(id).onsuccess=function(e){
+                                var result= e.target.result;
+                                result.name=data.name||result.name;
+                                result.age=data.age||result.age;
+                                var putRequest=store.put(result);
+                                putRequest.onerror=function(e){
+                                    console.log("Database error: "+e.target.error);
+                                }
+                                putRequest.onsuccess=function(e){
+                                    console.log("更新成功");
+                                }
+                                store.get(id).onsuccess=function(e){
+                                    var result= e.target.result;
+                                    console.log(JSON.stringify(result));
+                                }
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //清空数据
+                clearObjectStore: function (storeName) {
+                    try{
+                        if(!!db.db){
+                            var transaction=db.db.transaction(storeName,"readwrite");
+                            var store=transaction.objectStore(storeName);
+                            var storeRequest=store.clear();
+                            storeRequest.onsuccess=function(e){
+                                console.log("清空成功");
+                            }
+                            storeRequest.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //根据ID获取信息
+                getObjectById:function(storeName,id){
+                    try{
+                        if(!!db.db){
+                            var transaction=db.db.transaction(storeName,"readwrite");
+                            var store=transaction.objectStore(storeName);
+                            var getRequest=store.get(id);
+                            getRequest.onsuccess=function(e){
+                                var obj=e.target.result;
+                                if(!!obj){
+                                    console.log(JSON.stringify(obj));
+                                }
+                            }
+                            getRequest.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //根据ID获取信息
+                getObjectByIndex:function(storeName,indexName,name){
+                    try{
+                        if(!!db.db){
+                            var transaction=db.db.transaction(storeName,"readwrite");
+                            var store=transaction.objectStore(storeName);
+                            var index=store.index(indexName);
+                            var getRequest=index.get(name);
+                            getRequest.onsuccess=function(e){
+                                var obj=e.target.result;
+                                if(!!obj){
+                                    console.log(JSON.stringify(obj));
+                                }
+                            }
+                            getRequest.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+
+
+                /*
+                    范围类型或过滤器	         描述
+                    IDBKeyRange.bound	         返回指定范围内的所有记录。这个范围有一个下边界和上边界。它还有两个可选的参数：lowerOpen 和 upperOpen，这两个参数表明下边界或上边界上的记录是否应包含在范围内。
+                    IDBKeyRange.lowerBound	     超过指定的边界值范围的所有记录。此范围有一个可选的参数 lowerOpen，表明下边界上的记录是否应包含在范围中。
+                    IDBKeyRange.upperBound	     返回指定的边界值之前的所有记录。它也有一个可选的 upperOpen 参数。
+                    IDBKeyRange.only	         仅返回与指定值匹配的记录。
+                */
+                //游标迭代左右元素
+                fecthAllData:function(storeName){
+                    try{
+                        if(!!db.db){
+                            var transcation=db.db.transaction(storeName,"readwrite");
+                            var store=transcation.objectStore(storeName);
+                            var request=store.openCursor();
+                            request.onsuccess=function(e){
+                                var cursor= e.target.result;
+                                if(cursor){
+                                    var obj=cursor.value;
+                                    console.log(JSON.stringify(obj));
+                                    cursor.continue();
+                                }
+                            }
+                            request.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //游标迭代指定元素
+                fecthDataIDBKeyRangeOnly:function(storeName,indexName,value){
+                    try{
+                        if(!!db.db){
+                            var range=IDBKeyRange.only(value);
+                            var transcation=db.db.transaction(storeName,"readwrite");
+                            var store=transcation.objectStore(storeName);
+                            var index=store.index(indexName);
+                            var request=index.openCursor(range);
+                            request.onsuccess=function(e){
+                                var cursor= e.target.result;
+                                if(cursor){
+                                    var obj=cursor.value;
+                                    console.log(JSON.stringify(obj));
+                                    cursor.continue();
+                                }
+                            }
+                            request.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //游标迭代指定元素(大于等于指定值)
+                fecthDataIDBKeyRangeLowerBound:function(storeName,indexName,value){
+                    try{
+                        if(!!db.db){
+                            var range=IDBKeyRange.lowerBound(value);
+                            var transcation=db.db.transaction(storeName,"readwrite");
+                            var store=transcation.objectStore(storeName);
+                            var index=store.index(indexName);
+                            var request=index.openCursor(range);
+                            request.onsuccess=function(e){
+                                var cursor= e.target.result;
+                                if(cursor){
+                                    var obj=cursor.value;
+                                    console.log(JSON.stringify(obj));
+                                    cursor.continue();
+                                }
+                            }
+                            request.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //游标迭代指定元素(小于等于指定值)
+                fecthDataIDBKeyRangeUpperBound:function(storeName,indexName,value){
+                    try{
+                        if(!!db.db){
+                            var range=IDBKeyRange.upperBound(value,true);
+                            var transcation=db.db.transaction(storeName,"readwrite");
+                            var store=transcation.objectStore(storeName);
+                            var index=store.index(indexName);
+                            var request=index.openCursor(range);
+                            request.onsuccess=function(e){
+                                var cursor= e.target.result;
+                                if(cursor){
+                                    var obj=cursor.value;
+                                    console.log(JSON.stringify(obj));
+                                    cursor.continue();
+                                }
+                            }
+                            request.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                },
+                //游标迭代指定元素(指定值之间)
+                fecthDataIDBKeyRangeBound:function(storeName,indexName,lowerValue,upperValue){
+                    try{
+                        if(!!db.db){
+                            var range=IDBKeyRange.bound(lowerValue,upperValue,true,true);
+                            var transcation=db.db.transaction(storeName,"readwrite");
+                            var store=transcation.objectStore(storeName);
+                            var index=store.index(indexName);
+                            var request=index.openCursor(range);
+                            request.onsuccess=function(e){
+                                var cursor= e.target.result;
+                                if(cursor){
+                                    var obj=cursor.value;
+                                    console.log(JSON.stringify(obj));
+                                    cursor.continue();
+                                }
+                            }
+                            request.onerror=function(e){
+                                console.log("Database error: "+e.target.error);
+                            }
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                }
+            }
+            window.app=window.app||{};
+            window.app.db=db;
+        })(window)
+
+        ;(function($){
+            $(function(){
+                $("#connDatabase").click(function(){
+                    app.db.createDatabase();
+                })
+                $("#deleteDatabase").click(function(){
+                    app.db.deleteDatabase();
+                })
+                $("#createObjectStore").click(function(){
+                    app.db.createObjectStore("student");
+                })
+                $("#createIndex").click(function(){
+                    app.db.createIndex("student",["age"]);
+                })
+                var studentData=[
+                    {
+                        id:1,
+                        name:"limingle",
+                        age:23
+                    },
+                    {
+                        id:2,
+                        name:"linping",
+                        age:25
+                    },
+                    {
+                        id:3,
+                        name:"wangxin",
+                        age:29
+                    },
+                ]
+                $("#addObjectStore").click(function(){
+                    app.db.addObjectStore("student",studentData);
+                })
+                $("#updateObjectStore").click(function(){
+                    app.db.updateObjectStore("student",3,{
+                        name:"xiewendong",
+                        age:19
+                    });
+                })
+                $("#clearObjectStore").click(function(){
+                    app.db.clearObjectStore("student");
+                })
+                $("#getObjectById").click(function(){
+                    app.db.getObjectById("student",3);
+                })
+                $("#getObjectByIndex").click(function(){
+                    app.db.getObjectByIndex("student","nameIndex","wangxin");
+                })
+                $("#fecthAllData").click(function(){
+                    app.db.fecthAllData("student");
+                })
+                $("#fecthDataIDBKeyRangeOnly").click(function(){
+                    app.db.fecthDataIDBKeyRangeOnly("student","nameIndex","xiangwentian");
+                })
+                $("#fecthDataIDBKeyRangeLowerBound").click(function(){
+                    app.db.fecthDataIDBKeyRangeLowerBound("student","ageIndex",19);
+                })
+                $("#fecthDataIDBKeyRangeUpperBound").click(function(){
+                    app.db.fecthDataIDBKeyRangeUpperBound("student","ageIndex",19);
+                })
+                $("#fecthDataIDBKeyRangeBound").click(function(){
+                    app.db.fecthDataIDBKeyRangeBound("student","ageIndex",17,19);
+                })
+            })
+        })(jQuery)
+    </script>
+</head>
+<body>
+    <button id="connDatabase">链接数据库</button>
+    <button id="deleteDatabase">删除数据库</button>
+    <button id="createObjectStore">创建objectStore</button>
+    <button id="createIndex">创建索引</button>
+    <button id="addObjectStore">添加学生信息</button>
+    <button id="updateObjectStore">更新学生信息</button>
+    <button id="clearObjectStore">清空学生信息</button>
+    <button id="getObjectById">获取学生信息byID</button>
+    <button id="getObjectByIndex">获取学生信息byIndex</button>
+    <button id="fecthAllData">游标遍历所有数据</button>
+    <button id="fecthDataIDBKeyRangeOnly">游标遍历指定条件数据</button>
+    <button id="fecthDataIDBKeyRangeLowerBound">游标遍历指定数据(大于等于指定值)</button>
+    <button id="fecthDataIDBKeyRangeUpperBound">游标遍历指定数据(小于等于指定值)</button>
+    <button id="fecthDataIDBKeyRangeBound">游标遍历指定数据(指定值之间)</button>
+</body>
+</html>
