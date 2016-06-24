@@ -51,15 +51,15 @@
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <form id="formPotatoAdd">
+                    <form action="">
                         <div class="">
                             <input type="hidden" id="potatoId" name="id"/>
                             <input type="text" id="potatoName" name="name" class="form-control" placeholder="输入要完成的任务">
                         </div>
                     </form>
                 </div>
-                <div class="list-group">
-                    <a href="#" class="list-group-item">
+                <div id="potatoPanel" class="list-group">
+                    <!--<a href="#" class="list-group-item" data-id="{id}">
                         <div class="form-inline">
                             <div class="checkbox">
                                 <label>
@@ -88,9 +88,10 @@
                             <input type="text" name="potatoName" class="form-control" placeholder="输入要完成的任务">
                         </form>
                         <span class="badge hide">X</span>
-                    </a>
+                    </a>-->
                 </div>
             </div>
+            <button id="clearPotato" type="button" class="btn btn-danger">清除土豆数据</button>
         </div>
     </div>
 </div>
@@ -105,24 +106,22 @@
 </script>
 <script id="potatoListItemTemp" type="text/template">
     <a href="#" class="list-group-item">
+        <span class="badge hide" data-id="{id}">X</span>
         <div class="form-inline">
             <div class="checkbox">
                 <label>
                     <input type="checkbox" id="{id}" value="">
-                    {name}
+                    <span class="potatoName">{name}</span>
                 </label>
             </div>
         </div>
         <form action="">
             <input type="hidden" name="id" value="{id}"/>
-            <input type="text" name="name" class="form-control" placeholder="输入要完成的任务" value="{name}">
+            <input type="text" name="name" class="form-control hide" placeholder="输入要完成的任务" value="{name}">
+            <input type="text" style="display: none;">
         </form>
-        <span class="badge hide" data-id="{id}">X</span>
     </a>
 </script>
-<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.js" type="application/javascript"></script>
-<script src="js/indexeddb.js" type="application/javascript"></script>
-<script src="js/indexeddb.js" type="application/javascript"></script>
-<script src="js/potato.js" type="application/javascript"></script>
-<script src="js/tomato.js" type="application/javascript"></script>
+<script src="js/plugins/requireJS/require.js" type="application/javascript"></script>
+<script src="js/main.js" type="application/javascript"></script>
 </html>
