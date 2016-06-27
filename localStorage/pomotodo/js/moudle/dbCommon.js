@@ -27,7 +27,7 @@
             window.msIDBKeyRange;
 
     function dbCommon(){
-        this.version=1;
+        this.version=4;
         this.dbName="pomotodo";
         this.instance={};
     }
@@ -103,10 +103,15 @@
                 })
             })
         },
-        searchAll:function(callback){
+        searchAll:function(option){
             this.openDB(function(){
                 var store=this.getObjectStore("readonly");
-                var cursorResult=store.openCursor();
+                var cursorResult;
+                if(option.getType=="store"){
+                    cursorResult=store.openCursor();
+                }else if(option.getType=="index"){
+                    cursorResult=store.index(option.indexName).openCursor();
+                }
                 var data=[];
                 cursorResult.onsuccess=function(e){
                     var result= e.target.result;
@@ -114,7 +119,7 @@
                         data.push(result.value);
                         result.continue();
                     }else{
-                        callback.call(this,data);
+                        option.cb.call(this,data);
                     }
                 }
             })

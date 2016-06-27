@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="css/main.css"/>
+    <title>番茄土豆</title>
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
 <div class="container">
@@ -20,33 +20,32 @@
         <div class="col-md-6">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading">
-                    <form>
+                <div id="panelHeadingTomato" class="panel-heading">
+                    <form id="formTomato" class="hide">
                         <div class="">
-                            <input type="hidden" name="id"/>
-                            <input type="hidden" name="name"/>
-                            <input type="hidden" name="startTime"/>
-                            <input type="hidden" name="endTime"/>
-                            <!--<input type="text" class="form-control" placeholder="">-->
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                    60%
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-default btn-lg btn-block">（块级元素）Block level button</button>
+                            <input id="txbStartTime" type="hidden" name="startTime"/>
+                            <input id="txbEndTime" type="hidden" name="endTime"/>
+                            <input id="tomatoName" name="name" type="text" class="form-control" placeholder="">
                         </div>
                     </form>
+                    <span id="delTomato" class="glyphicon glyphicon-remove-circle clear-btn hide"></span>
+                    <div id="customProgress" class="custom-progress hide">
+                        <div id="customProgressChild" class="custom-progress-child" style="width: 70%"></div>
+                        <span id="customProgressNum" class="custom-progress-num">12:32</span>
+                    </div>
+                    <button id="startTomato" type="button" class="btn btn-default btn-lg btn-block">开始番茄</button>
                 </div>
-                <dl class="list-group">
-                    <dt href="#" class="list-group-item">
+                <dl id="listGroup" class="list-group">
+                    <!--<dt href="#" class="list-group-item">
                         <h4>Cras justo odio</h4>
                     </dt>
                     <dd href="#" class="list-group-item">Dapibus ac facilisis in</dd>
                     <dd href="#" class="list-group-item">Morbi leo risus</dd>
                     <dd href="#" class="list-group-item">Porta ac consectetur ac</dd>
-                    <dd href="#" class="list-group-item">Vestibulum at eros</dd>
+                    <dd href="#" class="list-group-item">Vestibulum at eros</dd>-->
                 </dl>
             </div>
+            <button id="clearTomato" type="button" class="btn btn-danger">清除番茄数据</button>
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">

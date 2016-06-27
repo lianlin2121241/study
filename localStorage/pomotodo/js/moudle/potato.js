@@ -33,9 +33,12 @@
         }
         //加载土豆列表
         var loadData=function(){
-            dbPotato.searchAll(function(data){
-                data=_.filter(data, function(item){ return item.isDel == 0; })
-                showData(data);
+            dbPotato.searchAll({
+                getType:"store",
+                cb:function(data){
+                    data=_.filter(data, function(item){ return item.isDel == 0; })
+                    showData(data);
+                }
             })
         }
         loadData();

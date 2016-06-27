@@ -17,6 +17,7 @@ require.config({
 })
 require(["jquery","potato","tomato"],function($,potato,tomato){
     $(function(){
+        tomato.init();
         potato.init();
     })
 })
