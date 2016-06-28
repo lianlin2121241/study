@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest="./manifest.appcache">
 <head>
     <meta charset="UTF-8">
     <title>番茄土豆</title>
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap-theme.css" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css"/>
+    <script>
+        window.addEventListener("load",function(){
+            window.applicationCache.addEventListener("updateready",function(){
+                console.log(window.applicationCache.status)
+                if(window.applicationCache.status==window.applicationCache.UPDATEREADY){
+                    window.applicationCache.swapCache();
+                    if(confirm("应用更新是否重新获取")){
+                        location.reload();
+                    }
+                }else{
+                    console.log("应用未更新")
+                }
+            },false)
+        },false)
+    </script>
 </head>
 <body>
 <div class="container">
@@ -104,7 +119,7 @@
     <dd href="#" class="list-group-item">{name}</dd>
 </script>
 <script id="potatoListItemTemp" type="text/template">
-    <a href="#" class="list-group-item">
+    <a data-id="{id}" class="list-group-item">
         <span class="badge hide" data-id="{id}">X</span>
         <div class="form-inline">
             <div class="checkbox">

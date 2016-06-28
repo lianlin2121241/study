@@ -46,3 +46,16 @@
     color: #777777;
     z-index: 1;
 }
+
+.sortable-placeholder{
+    display: block;
+    height: 43px;
+    border-style: dotted;
+    border-color: #cccccc;
+    border-width: 1px;
+}
+
+.list-group{
+    max-height: 1400px;
+    overflow: hidden;
+}

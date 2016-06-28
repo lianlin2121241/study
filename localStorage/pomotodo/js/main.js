@@ -6,6 +6,7 @@ require.config({
     baseUrl:"./js/",
     paths:{
         jquery:"http://libs.baidu.com/jquery/1.9.1/jquery",
+        jqueryui:"http://cdn.bootcss.com/jqueryui/1.12.0-rc.2/jquery-ui.min",
         underscore:"plugins/underscore/underscore",
         common:"moudle/common/common",
         dbCommon:"moudle/dbCommon",
@@ -17,7 +18,7 @@ require.config({
 })
 require(["jquery","potato","tomato"],function($,potato,tomato){
     $(function(){
-        tomato.init();
         potato.init();
+        tomato.init();
     })
 })

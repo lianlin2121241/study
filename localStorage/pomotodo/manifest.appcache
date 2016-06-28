@@ -1,0 +1,21 @@
+CACHE MANIFEST
+#version 1.1
+CACHE:
+    http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.css
+    http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap-theme.css
+    css/bootstrap.css
+    css/main.css
+    js/main.js
+    js/moudle/dbCommon.js
+    js/moudle/dbPotato.js
+    js/moudle/dbTomato.js
+    js/moudle/potato.js
+    js/moudle/tomato.js
+    js/moudle/common/common.js
+    js/plugins/requireJS/require.js
+    js/plugins/underscore/underscore.js
+    media/warming.mp3
+    http://libs.baidu.com/jquery/1.9.1/jquery.js
+    http://cdn.bootcss.com/jqueryui/1.12.0-rc.2/jquery-ui.min.js
+NETWORK:
+    *

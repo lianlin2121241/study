@@ -4,7 +4,7 @@
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD
-        define(["jquery","dbPotato","underscore","common"], factory);
+        define(["jquery","dbPotato","underscore","common","jqueryui"], factory);
     } else if (typeof module === 'object' && module.exports) {
         factory(require('jquery'));
     } else {
@@ -19,6 +19,25 @@
         var $listPanel=$("#potatoPanel");
         var $potatoListItemTemp=$("#potatoListItemTemp");
         var $clearPotato=$("#clearPotato");
+
+        function updateSort(event, ui){
+            var listGroupItems=$listPanel.children();
+            listGroupItems.each(function(index,item){
+                var id=parseInt($(item).attr("data-id"));
+                dbPotato.searchById(id,function(result){
+                    result["sort"]=index;
+                    dbPotato.save(result,function(){
+                        console.log("修改顺序成功！");
+                    })
+                })
+            })
+        }
+        $listPanel.sortable({
+            placeholder: "sortable-placeholder",
+            stop:updateSort
+        })
+        $listPanel.disableSelection()
+
         //渲染土豆列表
         var showData=function(data){
             $listPanel.empty();
@@ -34,7 +53,8 @@
         //加载土豆列表
         var loadData=function(){
             dbPotato.searchAll({
-                getType:"store",
+                getType:"index",
+                indexName:"sortIndex",
                 cb:function(data){
                     data=_.filter(data, function(item){ return item.isDel == 0; })
                     showData(data);
@@ -50,10 +70,12 @@
                 if(potatoName.length==0){
                     return;
                 }
+                var potatoCount=$listPanel.children().length;
                 var data={
                     name:potatoName,
                     createTime:dateTime,
-                    isDel:0
+                    isDel:0,
+                    sort:potatoCount
                 }
                 dbPotato.save(data,function(){
                     loadData();
@@ -69,6 +91,7 @@
                 $(this).find(".form-inline").hide();
                 $(this).find(".form-control").removeClass("hide");
                 $(this).find(".badge").addClass("hide");
+                $listPanel.sortable( "disable" );
             })
             .on("keydown",".form-control",function(e){
                 var self=this;
@@ -89,6 +112,7 @@
                             }else{
                                 listGroupItem.find(".badge").addClass("hide");
                             }
+                            $listPanel.sortable( "enable" );
                             console.log("修改成功！");
                         })
                     })

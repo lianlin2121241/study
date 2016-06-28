@@ -27,7 +27,7 @@
             window.msIDBKeyRange;
 
     function dbCommon(){
-        this.version=4;
+        this.version=5;
         this.dbName="pomotodo";
         this.instance={};
     }
@@ -47,6 +47,17 @@
                     var indexRequest=objectStore.createIndex(item.name+"Index",item.name,{unique:item.unique});
                     indexRequest.onsuccess=function(e){
                         console.log(e.target.result);
+                    }
+                })
+            }else{
+                var transactionE=e.target.transaction;
+                var store=transactionE.objectStore(this.dbStoreName,"readwrite");
+                this.indexArr.forEach(function(item,index){
+                    if(!store.indexNames.contains(item.name+"Index")){
+                        var indexRequest=store.createIndex(item.name+"Index",item.name,{unique:item.unique});
+                        indexRequest.onsuccess=function(e){
+                            console.log(e.target.result);
+                        }
                     }
                 })
             }

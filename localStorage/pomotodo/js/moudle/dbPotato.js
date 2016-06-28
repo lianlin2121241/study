@@ -32,6 +32,10 @@
             {
                 name:"isDel",
                 unique:false
+            },
+            {
+                name:"sort",
+                unique:false
             }
         ];
     }
