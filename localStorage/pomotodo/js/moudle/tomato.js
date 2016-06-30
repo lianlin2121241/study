@@ -134,6 +134,7 @@
                     stopInterval();
                     showTomatoHeadState("start");
                     playMusic();
+                    return;
                 }
                 $customProgressChild.width((timeCount/restTimes*100)+"%");
 
@@ -213,10 +214,12 @@
 
 
         $clearTomato.on("click",function(){
-            dbTomato.clearStore(function(){
-                loadData();
-                console.log("清除成功！");
-            })
+            if(confirm("清除数据会导致所有番茄删除，是否确认清除？")) {
+                dbTomato.clearStore(function () {
+                    loadData();
+                    console.log("清除成功！");
+                })
+            }
         })
     }
     function destory(){

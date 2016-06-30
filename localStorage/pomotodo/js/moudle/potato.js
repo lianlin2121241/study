@@ -143,10 +143,12 @@
             })
 
         $clearPotato.on("click",function(){
-            dbPotato.clearStore(function(){
-                loadData();
-                console.log("清除成功！");
-            })
+            if(confirm("清除数据会导致所有土豆删除，是否确认清除？")) {
+                dbPotato.clearStore(function () {
+                    loadData();
+                    console.log("清除成功！");
+                })
+            }
         })
     }
     function destory(){

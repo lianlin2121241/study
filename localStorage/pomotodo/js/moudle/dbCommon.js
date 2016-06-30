@@ -27,56 +27,60 @@
             window.msIDBKeyRange;
 
     function dbCommon(){
-        this.version=5;
+        this.version=6;
         this.dbName="pomotodo";
         this.instance={};
     }
     dbCommon.prototype={
         errorHandle:function(e){
-            console.log("Database error: "+ e.target.errorCode);
+            console.log("Database error: "+ e.target.error.message);
         },
-        upgradeneededHandel:function(e){
+        upgradeneededHandel:function(e,dbObj){
             var _db= e.target.result;
             var _stores=_db.objectStoreNames;
-            if(!_stores.contains(this.dbStoreName)){
-                var objectStore=_db.createObjectStore(this.dbStoreName,{
-                    keyPath:"id",
-                    autoIncrement:true
-                })
-                this.indexArr.forEach(function(item,index){
-                    var indexRequest=objectStore.createIndex(item.name+"Index",item.name,{unique:item.unique});
-                    indexRequest.onsuccess=function(e){
-                        console.log(e.target.result);
-                    }
-                })
-            }else{
-                var transactionE=e.target.transaction;
-                var store=transactionE.objectStore(this.dbStoreName,"readwrite");
-                this.indexArr.forEach(function(item,index){
-                    if(!store.indexNames.contains(item.name+"Index")){
-                        var indexRequest=store.createIndex(item.name+"Index",item.name,{unique:item.unique});
+            dbObj.forEach(function(item,index){
+                if(!_stores.contains(item.dbStoreName)){
+                    var objectStore=_db.createObjectStore(item.dbStoreName,{
+                        keyPath:"id",
+                        autoIncrement:true
+                    })
+                    item.indexArr.forEach(function(item,index){
+                        var indexRequest=objectStore.createIndex(item.name+"Index",item.name,{unique:item.unique});
                         indexRequest.onsuccess=function(e){
                             console.log(e.target.result);
                         }
-                    }
-                })
-            }
+                    })
+                }else{
+                    var transactionE=e.target.transaction;
+                    var store=transactionE.objectStore(item.dbStoreName,"readwrite");
+                    item.indexArr.forEach(function(item,index){
+                        if(!store.indexNames.contains(item.name+"Index")){
+                            var indexRequest=store.createIndex(item.name+"Index",item.name,{unique:item.unique});
+                            indexRequest.onsuccess=function(e){
+                                console.log(e.target.result);
+                            }
+                        }
+                    })
+                }
+            })
         },
-        openDB:function(callback){
+        openDB:function(callback,dbObj){
             var self=this;
             var openRequest=window.indexedDB.open(this.dbName,this.version);
             openRequest.onerror=this.errorHandle;
-            openRequest.onupgradeneeded=this.upgradeneededHandel.bind(self);
+            openRequest.onupgradeneeded=function(e){
+                self.upgradeneededHandel.call(self,e,dbObj);
+            }
             openRequest.onsuccess=function(e){
                 self.instance= e.target.result;
                 callback.call(self);
             };
         },
         getObjectStore:function(model){
-            var trans,store;
-            var model=model||"readonly";
-            trans=this.instance.transaction(this.dbStoreName,model);
-            return store=trans.objectStore(this.dbStoreName);
+            var trans, store;
+            var model = model || "readonly";
+            trans = this.instance.transaction(this.dbStoreName, model);
+            return store = trans.objectStore(this.dbStoreName);
         },
         save:function(data,callback){
             this.openDB(function(){

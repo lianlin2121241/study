@@ -16,8 +16,25 @@ require.config({
         tomato:"moudle/tomato"
     }
 })
-require(["jquery","potato","tomato"],function($,potato,tomato){
+require(["jquery","potato","tomato","dbPotato","dbTomato","dbCommon"],function($,potato,tomato,dbPotato,dbTomato,dbCommon){
     $(function(){
+        var DBPotato=new dbPotato.dbPotato();
+        var DBTomato=new dbTomato.dbTomato();
+        var DBCommon=new dbCommon.dbCommon();
+        var dbObj=[
+            {
+                dbStoreName:DBPotato.dbStoreName,
+                indexArr:DBPotato.indexArr
+            },
+            {
+                dbStoreName:DBTomato.dbStoreName,
+                indexArr:DBTomato.indexArr
+            }
+        ]
+        DBCommon.openDB(function(){
+            //console.log("数据库版本未变更。")
+        },dbObj);
+
         potato.init();
         tomato.init();
     })
