@@ -4,6 +4,7 @@ var path=require("path");
 var mongoose=require("mongoose");
 var _=require("underscore");
 var Movie=require("./models/movie");
+var User=require("./models/user");
 var port=process.env.ROPT||3000;
 var app=express();
 app.use(bodyParser.urlencoded({extended:false}));
