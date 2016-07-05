@@ -7,6 +7,8 @@ var Movie=require("./models/movie");
 var User=require("./models/user");
 var port=process.env.ROPT||3000;
 var app=express();
+app.locals.moment=require("moment");
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static(path.join(__dirname,"public")));
 
@@ -95,6 +97,60 @@ app.post("/admin/movie/new",function(req,res){
 			res.redirect("/movie/"+movie._id)
 		})
 	}
+})
+//注册用户
+app.post("/user/signup",function(req,res){
+	var userObj=req.body;
+	User.find({name:userObj.name},function(err,user){
+		!!err&&console.log(err);
+		if(!!user){
+			console.log(user);
+			res.redirect("/");
+		}else{
+			var _user;
+			_user=new User(userObj)
+			_user.save(function(err,user){
+				!!err&&console.log(err);
+				res.redirect("/admin/userlist");
+			})
+		}
+	})
+	
+})
+//登录
+app.post("/user/signin",function(req,res){
+	var userObj=req.body;
+	var name=userObj.name;
+	var password=userObj.password;
+	User.findOne({name:name},function(err,user){
+		!!err&&console.log(err);
+		if(!user){
+			console.log("not has user")
+			return res.redirect("/");
+		}
+		user.comparePassword(password,function(err,isMatch){
+			!!err&&console.log(err);
+			if(isMatch){
+				console.log("password is match");
+			}else{
+				console.log("password is not match");
+			}
+			res.redirect("/admin/userlist");
+		})
+	})
+	
+})
+//获取用户列表
+app.get("/admin/userlist",function(req,res){
+	User.fetch(function(err,users){
+		if(err){
+			console.log(err);
+		}
+		res.render("userlist",{
+			title:"imooc 用户列表页",
+			users:users
+		})
+	})
 })
 app.get("/admin/list",function(req,res){
 	Movie.fetch(function(err,movies){
