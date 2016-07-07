@@ -52,7 +52,7 @@ module.exports.showSignin=function(req,res){
 }
 //注册页
 module.exports.showSignup=function(req,res){
-	res.render("signin",{
+	res.render("signup",{
 		title:"注册页面"
 	})
 	
@@ -60,7 +60,7 @@ module.exports.showSignup=function(req,res){
 //注销
 module.exports.logout=function(req,res){
 	delete req.session.user;
-	res.redirect("/");
+	res.redirect("/signin");
 }
 //获取用户列表
 module.exports.list=function(req,res){
@@ -73,4 +73,22 @@ module.exports.list=function(req,res){
 			users:users
 		})
 	})
+}
+//验证用户是否登录
+module.exports.signinRequired=function(req,res,next){
+	var _user=req.session.user;
+	if (!_user) {
+		return res.redirect("/signin");
+	}
+	next();
+}
+//验证用户是否为管理员
+module.exports.adminRequired=function(req,res,next){
+	var _user=req.session.user;
+	console.log(_user.role);
+	console.log(_user.role<10);
+	if (!_user.role||_user.role<=10) {
+		return res.redirect("/signin");
+	}
+	next();
 }

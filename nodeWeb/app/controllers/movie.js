@@ -1,17 +1,26 @@
 var Movie=require("../models/movie");
+var Comment=require("../models/comment");
 var _=require("underscore");
 //查看电影信息
 module.exports.detail=function(req,res){
 	var id=req.params.id;
 	Movie.findById(id,function(err,movie){
-		if(!!err){
-			console.log(err);
-		}else{
-			res.render("detail",{
-				title:"imooc 详情页",
-				movie:movie
+		console.log(movie);
+		Comment
+			.find({movie:id})
+			.populate("from","name")
+			.populate("replys.from replys.to","name")
+			.exec(function(err,comments){
+				console.log(comments);
+				if(err){
+					console.log(err);
+				}
+				res.render("detail",{
+					title:"imooc 详情页",
+					movie:movie,
+					comments:comments
+				})
 			})
-		}
 	})
 }
 //保存电影信息

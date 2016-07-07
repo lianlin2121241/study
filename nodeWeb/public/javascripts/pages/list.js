@@ -4,7 +4,7 @@ $(function(){
             tr=$(this).closest("tr");
         $.ajax({
             type:"DELETE",
-            url:"/admin/list?id="+id
+            url:"/admin/movie/list?id="+id
         })
         .done(function(results){
             if(results.success==1){
