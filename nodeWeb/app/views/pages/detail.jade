@@ -33,10 +33,14 @@ block content
                         #comments
                         form(method="post",action="/comment/save")#commentForm
                             input(type="hidden",name="movie",value="#{movie._id}")
-                            input(type="hidden",name="from",value="#{user._id}")
-                            .form-group
-                                textarea.form-control(name="content",row="3")
-                            button.btn.btn-primary(type="submit") 提交
+                            if user
+                                input(type="hidden",name="from",value="#{user._id}")
+                                .form-group
+                                    textarea.form-control(name="content",row="3")
+                            if user
+                                button.btn.btn-primary(type="submit") 提交
+                            else
+                                a.navbar-link(href="#",data-toggle="modal",data-target="#singinModal") 登录后才能评论
             .col-md-5
                 dl.dl-horizontal
                     dt 电影名字

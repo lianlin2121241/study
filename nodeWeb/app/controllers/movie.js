@@ -1,5 +1,6 @@
 var Movie=require("../models/movie");
 var Comment=require("../models/comment");
+var Category=require("../models/category");
 var _=require("underscore");
 //查看电影信息
 module.exports.detail=function(req,res){
@@ -25,11 +26,11 @@ module.exports.detail=function(req,res){
 }
 //保存电影信息
 module.exports.save=function(req,res){
-	var id=req.body._id;
 	var movieObj=req.body;
+	var id=movieObj._id;
 	//console.log(id);
 	var _movie;
-	if(id!="undefined"){
+	if(id){
 		Movie.findById(id,function(err,movie){
 			if(!!err){
 				console.log(err);
@@ -41,19 +42,17 @@ module.exports.save=function(req,res){
 			})
 		})
 	}else{
-		_movie=new Movie({
-			doctor:movieObj.doctor,
-			title:movieObj.title,
-			country:movieObj.country,
-			language:movieObj.language,
-			year:movieObj.year,
-			poster:movieObj.poster,
-			summary:movieObj.summary,
-			flash:movieObj.flash
-		})
+		_movie=new Movie(movieObj)
 		_movie.save(function(err,movie){
-			!!err&&console.log(err);
-			res.redirect("/movie/"+movie._id)
+			!!err&& console.log(err);
+			Category.findById(movieObj.category,function(err,category){
+				!!err&&console.log(err);
+				category.movies.push(movie._id);
+				category.save(function(err,category){
+					!!err&&console.log(err);
+					res.redirect("/movie/"+movie._id)
+				})
+			})
 		})
 	}
 }
@@ -71,18 +70,15 @@ module.exports.list=function(req,res){
 }
 //新建电影信息
 module.exports.new=function(req,res){
-	res.render("admin",{
-		title:"imooc 后台录入页",
-		movie:{
-			title:"",
-			doctor:"",
-			country:"",
-			language:"",
-			poster:"",
-			flash:"",
-			year:"",
-			summary:""
+	Category.fetch(function(err,categories){
+		if(err){
+			console.log(err);
 		}
+		res.render("admin",{
+			title:"imooc 后台录入页",
+			movie:{},
+			categories:categories
+		})
 	})
 }
 //更新电影信息
@@ -90,10 +86,13 @@ module.exports.update=function(req,res){
 	var id=req.params.id;
 	if(id){
 		Movie.findById(id,function(err,movie){
-			!!err&&console.log(err);
-			res.render("admin",{
-				title:"imooc 后台管理程序",
-				movie:movie
+			Category.fetch(function(err,categories){
+				!!err&&console.log(err);
+				res.render("admin",{
+					title:"imooc 后台管理程序",
+					movie:movie,
+					categories:categories
+				})
 			})
 		})
 	}

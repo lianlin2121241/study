@@ -2,6 +2,7 @@ var Index=require("../app/controllers/index");
 var Movie=require("../app/controllers/movie");
 var User=require("../app/controllers/user");
 var Comment=require("../app/controllers/comment");
+var Category=require("../app/controllers/category");
 
 module.exports=function(app){
 	//获取用户信息
@@ -31,4 +32,10 @@ module.exports=function(app){
 
 	//评论
 	app.post("/comment/save",User.signinRequired,Comment.save);
+
+	//电影分类
+	app.get("/admin/category/list",User.signinRequired,User.adminRequired,Category.list);
+	app.get("/admin/category/new",User.signinRequired,User.adminRequired,Category.new);
+	app.get("/admin/category/update/:id",User.signinRequired,User.adminRequired,Category.update);
+	app.post("/admin/category/save",User.signinRequired,User.adminRequired,Category.save);
 }
