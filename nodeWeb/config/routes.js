@@ -13,6 +13,7 @@ module.exports=function(app){
 	})
 	//首页
 	app.get("/",Index.index)
+	app.get("/search",Index.search);
 
 	//用户
 	app.post("/user/signup",User.signup)

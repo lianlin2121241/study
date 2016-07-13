@@ -43,14 +43,11 @@ module.exports.save=function(req,res){
 		})
 	}else{
 		var categoryName=movieObj.categoryName;
-		var category=movieObj.category;
+		var categoryId=movieObj.category;
 		_movie=new Movie(movieObj)
-				console.log("hgfhjklkdh1");
 		_movie.save(function(err,movie){
-				console.log("hgfhjklkdh2");
-				console.log(movie);
 			!!err&& console.log(err);
-			if(!!category){
+			if(!!categoryId){
 				console.log("hgfhjklkdh3");
 				Category.findById(movieObj.category,function(err,category){
 					!!err&&console.log(err);
@@ -61,14 +58,12 @@ module.exports.save=function(req,res){
 					})
 				})
 			}else if(!!categoryName){
-				console.log("hgfhjklkdh4");
 				console.log(movieObj);
 				var category=new Category({
 					name:categoryName,
 					movies:[movie._id]
 				})
 				category.save(function(err,category){
-				console.log("hgfhjklkdh5");
 					!!err&&console.log(err);
 					movie.category=category._id;
 					movie.save(function(err,movie){
