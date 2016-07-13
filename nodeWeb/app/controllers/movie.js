@@ -42,17 +42,41 @@ module.exports.save=function(req,res){
 			})
 		})
 	}else{
+		var categoryName=movieObj.categoryName;
+		var category=movieObj.category;
 		_movie=new Movie(movieObj)
+				console.log("hgfhjklkdh1");
 		_movie.save(function(err,movie){
+				console.log("hgfhjklkdh2");
+				console.log(movie);
 			!!err&& console.log(err);
-			Category.findById(movieObj.category,function(err,category){
-				!!err&&console.log(err);
-				category.movies.push(movie._id);
-				category.save(function(err,category){
+			if(!!category){
+				console.log("hgfhjklkdh3");
+				Category.findById(movieObj.category,function(err,category){
 					!!err&&console.log(err);
-					res.redirect("/movie/"+movie._id)
+					category.movies.push(movie._id);
+					category.save(function(err,category){
+						!!err&&console.log(err);
+						res.redirect("/movie/"+movie._id)
+					})
 				})
-			})
+			}else if(!!categoryName){
+				console.log("hgfhjklkdh4");
+				console.log(movieObj);
+				var category=new Category({
+					name:categoryName,
+					movies:[movie._id]
+				})
+				category.save(function(err,category){
+				console.log("hgfhjklkdh5");
+					!!err&&console.log(err);
+					movie.category=category._id;
+					movie.save(function(err,movie){
+						!!err&&console.log(err);
+						res.redirect("/movie/"+movie._id)
+					})
+				})
+			}
 		})
 	}
 }
