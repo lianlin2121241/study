@@ -1,10 +1,15 @@
 var Movie=require("../models/movie");
 var Comment=require("../models/comment");
 var Category=require("../models/category");
+var Path=require("path");
+var fs=require("fs");
 var _=require("underscore");
 //查看电影信息
 module.exports.detail=function(req,res){
 	var id=req.params.id;
+	Movie.update({_id:id},{$inc : {pv : 1}},function(err){
+		!!err&&console.log(err);
+	});
 	Movie.findById(id,function(err,movie){
 		console.log(movie);
 		Comment
@@ -24,10 +29,35 @@ module.exports.detail=function(req,res){
 			})
 	})
 }
+//海报上传
+module.exports.updatePoster=function(req,res,next){
+	var filePoster=req.files.updatePoster;
+	console.log(filePoster);
+	var filePath=filePoster.path;
+	var fileName=filePoster.name;
+	var fileType=filePoster.type;
+	if(fileName){
+		fs.readFile(filePath,function(err,data){
+			var time=Date.now();
+			!!err&&console.log(err)
+			var newPosterName=time+"."+fileType.split("/")[1];
+			var fileSavePath=Path.join(__dirname,"../../","public/updateFile/",newPosterName);
+			fs.writeFile(fileSavePath,data,function(err,data){
+				!!err&&console.log(err)
+				req.poster=newPosterName;
+				next();
+			})
+		})
+	}else{
+		next();
+	}
+}
 //保存电影信息
 module.exports.save=function(req,res){
 	var movieObj=req.body;
 	var id=movieObj._id;
+	var poster=req.poster;
+	!!poster&&(movieObj.poster=poster);
 	//console.log(id);
 	var _movie;
 	if(id){
@@ -77,15 +107,20 @@ module.exports.save=function(req,res){
 }
 //获取电影列表
 module.exports.list=function(req,res){
-	Movie.fetch(function(err,movies){
-		if(err){
-			console.log(err);
-		}
-		res.render("list",{
-			title:"imooc 列表页",
-			movies:movies
+	Movie
+		.find({})
+		.populate({
+			path: 'category'
 		})
-	})
+		.exec(function(err,movies){
+			if(err){
+				console.log(err);
+			}
+			res.render("list",{
+				title:"imooc 列表页",
+				movies:movies
+			})
+		})
 }
 //新建电影信息
 module.exports.new=function(req,res){

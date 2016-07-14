@@ -4,14 +4,17 @@ block content
 		.row
 			.panel.panel-default
 				.panel-heading
-					h3 #{category.name}
+					h3 #{keyword}
 				.panel-body
 					if movies&&movies.length>0
 						each item in movies
 							.col-md-2
 								.thumbnail
 									a(href="/movie/#{item._id}")
-										img(src="#{item.poster}",alt="#{item.title}",width="149")
+										if item.poster.indexOf("http")!=-1
+											img(src="#{item.poster}",alt="#{item.title}",width="149")
+										else
+											img(src="/updateFile/#{item.poster}",alt="#{item.title}",width="149")
 									.caption
 										h3= item.title
 										p: a.btn.btn-primary(href="/movie/#{item._id}",role="button") 观看预告片
@@ -19,9 +22,9 @@ block content
 				-for(var i=0;i<totalPage;i++){
 					-if(i==currentPage){
 						li.active
-							a(href="/search?cat=#{category._id}&p=#{currentPage}") #{currentPage+1}
+							a(href="/search?#{query}&p=#{currentPage}") #{currentPage+1}
 					-}else{
 						li
-							a(href="/search?cat=#{category._id}&p=#{i}") #{i+1}
+							a(href="/search?#{query}&p=#{i}") #{i+1}
 					-}
 				-}	

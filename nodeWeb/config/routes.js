@@ -3,6 +3,8 @@ var Movie=require("../app/controllers/movie");
 var User=require("../app/controllers/user");
 var Comment=require("../app/controllers/comment");
 var Category=require("../app/controllers/category");
+var Multiparty=require("connect-multiparty");
+var multipartMiddleware =Multiparty();
 
 module.exports=function(app){
 	//获取用户信息
@@ -25,7 +27,7 @@ module.exports=function(app){
 	
 	//电影
 	app.get("/movie/:id",Movie.detail)
-	app.post("/admin/movie/new",User.signinRequired,User.adminRequired,Movie.save)
+	app.post("/admin/movie/new",User.signinRequired,User.adminRequired,multipartMiddleware,Movie.updatePoster,Movie.save)
 	app.get("/admin/movie/list",User.signinRequired,User.adminRequired,Movie.list)
 	app.get("/admin/movie",User.signinRequired,User.adminRequired,Movie.new)
 	app.get("/admin/movie/update/:id",User.signinRequired,User.adminRequired,Movie.update)
