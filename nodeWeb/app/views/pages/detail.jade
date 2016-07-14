@@ -3,7 +3,10 @@ block content
     .container
         .row
             .col-md-7
-                embed(src="#{movie.flash}",allowFullScreen="true", quality = "high", width = "720", height = "600", align = "middle", type = "application/x-shockwave-flash")
+                if movie.flash.indexOf("http")>-1
+                    embed(src="#{movie.flash}",allowFullScreen="true", quality = "high", width = "720", height = "600", align = "middle", type = "application/x-shockwave-flash")
+                else
+                    video(src="/video/#{movie.flash}", width = "720", height = "600", autoplay="autoplay", controls="controls")
                 .panel.panel-defatul
                     .panel-heading
                         h3 评论区
