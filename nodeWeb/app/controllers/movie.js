@@ -65,6 +65,29 @@ module.exports.save=function(req,res){
 			if(!!err){
 				console.log(err);
 			}
+			if (movie.category!=movieObj.category) {
+				Category.findById(movie.category,function(err,category){
+					!!err&&console.log(err);
+					var oldMovies=category.movies;
+					for (var i = 0 ; i <oldMovies.length;i++ ) {
+						if (oldMovies[i].toString()==movie._id.toString()) {
+							category.movies.splice(i,1);
+							break;
+						}
+					}
+					category.save(function(err,category){
+						!!err&&console.log(err);
+					})
+				})
+				Category.findById(movieObj.category,function(err,category){
+				console.log("4");
+					!!err&&console.log(err);
+					category.movies.push(movieObj._id);
+					category.save(function(err,category){
+						!!err&&console.log(err);
+					})
+				})
+			}
 			_movie= _.extend(movie,movieObj);
 			_movie.save(function(err,movie){
 				!!err&&console.log(err);

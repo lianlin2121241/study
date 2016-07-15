@@ -9,10 +9,11 @@ block content
                         input#douban.form-control(type="text")
                 if movie&&movie._id
                     input#inputId(type="hidden",name="_id",value=movie._id)
-                .form-group
-                    label.col-sm-2.control-label(for="inputCategory") 电影分类
-                    .col-sm-10
-                        input#inputCategory.form-control(type="text",name="categoryName",value="")
+                if !movie||!movie._id
+                    .form-group
+                        label.col-sm-2.control-label(for="inputCategory") 电影分类
+                        .col-sm-10
+                            input#inputCategory.form-control(type="text",name="categoryName",value="")
                 .form-group
                     label.col-sm-2.control-label 电影分类选择
                     each cat in categories
