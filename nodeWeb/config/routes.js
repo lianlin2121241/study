@@ -27,6 +27,7 @@ module.exports=function(app){
 	
 	//电影
 	app.get("/movie/:id",Movie.detail)
+	app.get("/getMovieInfo",Movie.getMovieInfo)
 	app.post("/admin/movie/new",User.signinRequired,User.adminRequired,multipartMiddleware,Movie.updatePoster,Movie.save)
 	app.get("/admin/movie/list",User.signinRequired,User.adminRequired,Movie.list)
 	app.get("/admin/movie",User.signinRequired,User.adminRequired,Movie.new)

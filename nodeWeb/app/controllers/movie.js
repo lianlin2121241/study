@@ -128,6 +128,23 @@ module.exports.save=function(req,res){
 		})
 	}
 }
+//获取电影列表信息接口
+module.exports.getMovieInfo=function(req,res){
+	Movie
+		.find({})
+		.populate({
+			path: 'category'
+		})
+		.exec(function(err,movies){
+			if(err){
+				console.log(err);
+			}
+			res.json({
+				title:"imooc 列表页",
+				movies:movies
+			})
+		})
+}
 //获取电影列表
 module.exports.list=function(req,res){
 	Movie
