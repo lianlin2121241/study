@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="file" multiple="multiple" name="file" id="file">
+</body>
+<script>
+	var fileEle=document.getElementById("file");
+	var bodyEle=document.getElementsByTagName("body")[0];
+	document.addEventListener("dragover",dropFile,false);
+	function dropFile(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.dataTransfer.dropEffect="copy";
+		console.log(e.dataTransfer);
+		bodyEle.style.backgroundColor="red";
+	}
+	document.addEventListener("drag",dropFile,false);
+	function dropFile() {
+		bodyEle.style.backgroundColor="red";
+	}
+</script>
+</html>
