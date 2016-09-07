@@ -24,13 +24,13 @@ window.onload=function(){
 		var imgDataArr=imgData.data;
 		for(var i=1;i<=rows;i++){
 			for(var j=1;j<=cells;j++){
-				pointR=((i*s_height)*canvasW+(j*s_width))*4
+				pointR=((i*s_height-1)*canvasW+(j*s_width-1))*4
 				if(imgDataArr[pointR]<253||imgDataArr[pointR+1]<253||imgDataArr[pointR+2]<253){
 					filterData.push({
-						// x:j*s_width+(Math.random()-0.5)*10,
-						// y:i*s_height+(Math.random()-0.5)*10,
-						x:j*s_width,
-						y:i*s_height,
+						x:j*s_width+(Math.random()-0.5)*10,
+						y:i*s_height+(Math.random()-0.5)*10,
+						// x:j*s_width-1,
+						// y:i*s_height-1,
 						fillStyle:"rgb("+imgDataArr[pointR]+","+imgDataArr[pointR+1]+","+imgDataArr[pointR+2]+")"
 					})
 				}
