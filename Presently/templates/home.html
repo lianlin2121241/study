@@ -1,0 +1,17 @@
+<div class="datetime">
+	<h1>{{data.raw|date:"HH mm ss"}}</h1>
+	<h2>{{data.raw|date:"EEEE,MMMM d yyyy"}}</h2>
+	<div id="forecastList">
+		<ul class="row list-unstyled">
+			<li class="col-md-3" ng-repeat="day in weather.forecast.forecastday">
+				<img src="{{day.icon}}" alt="" ng-src="{{day.icon_url}}">
+				<h3>{{day.high.celsius}} ~ {{day.low.celsius}}</h3>
+				<h4 ng-if="$index==0">Now</h4>
+				<h4 ng-if="$index!=0">{{day.date.weekday}}</h4>
+			</li>
+		</ul>
+	</div>
+	<div id="forecast" class="forecast">
+		<pre>{{weather.forecast|json}}</pre>
+	</div>
+</div>

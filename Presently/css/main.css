@@ -1,10 +1,22 @@
 .datetime {
+	text-align: center;
 }
 .datetime h1 {
-	text-align: center;
 	font-size: 6.1em;
 }
 .datetime h2 {
-	text-align: center;
 	font-size: 1.0em;
+}
+.forecast{
+	text-align: left;
+}
+
+#actionbar {
+	position: fixed;
+	bottom: 0.5em;
+	right: 1.0em;
+}
+#actionbar a {
+	font-size: 2.2rem;
+	color: #000;
 }

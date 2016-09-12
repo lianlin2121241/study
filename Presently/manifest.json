@@ -3,7 +3,7 @@
 	"name": "Presently",
 	"description": "A currently clone",
 	"version": "0.1",
-	"permissions": ["http://api.wunderground.com/api/"],
+	"permissions": ["http://api.wunderground.com/api/","http://autocomplete.wunderground.com/"],
 	"background": {
 		"scripts": ["js/vendor/angular/angular.js"]
 	},
