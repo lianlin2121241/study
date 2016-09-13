@@ -1,5 +1,5 @@
-<h2>Settings</h2>
+<h2 page-title>Settings</h2>
 <form action="" ng-submit="save()">
-	<input type="text" auto-fill="fetchCities" ng-model="user.location" placeholder="Enter a location"/>
+	<input type="text" auto-fill="fetchCities" lml-user="user" time-zone="user.timeZone" ng-model="user.location" placeholder="Enter a location"/>
 	<input type="submit" value="Save" class="btn btn-primary">
 </form>

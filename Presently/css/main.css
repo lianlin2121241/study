@@ -20,3 +20,13 @@
 	font-size: 2.2rem;
 	color: #000;
 }
+
+.typeahead{
+
+}
+.typeahead ul{
+	border: 1px solid #cccccc;
+	max-height: 200px;
+	overflow: auto;
+	list-style: none;
+}

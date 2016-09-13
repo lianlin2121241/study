@@ -26,19 +26,31 @@ myApp.config(function($routeProvider){
 		})
 })
 
+myApp.directive("pageTitle",function(){
+	return {
+		restrict:"A",
+		template:"<h3>PageTitle：<span ng-transclude></span></h3>",
+		replace:true,
+		transclude:true
+	}
+})
+
 myApp.directive("autoFill",function($timeout){
 	return {
 		restrict:"EA",
 		scope:{
 			autoFill:"&",
-			ngModel:"="
+			ngModel:"=",
+			timeZone:"="
 		},
+		template:"<div></div>",
+		replace:true,
 		compile:function(tEle,tAttrs){
 			var temp=angular.element('<div class="typeahead">' +
 				'<input type="text" autocomplete="off" />' +
 				'<ul id="autolist" ng-show="reslist">' +
-				'<li ng-repeat="res in reslist" ' +
-				'>{{res.name}}</li>' +
+					'<li ng-repeat="res in reslist" ' +
+					'>{{res.name}}</li>' +
 				'</ul>' +
 				'</div>');
 			var input=temp.find("input");
@@ -67,6 +79,8 @@ myApp.directive("autoFill",function($timeout){
 									if (data.length==0) {return}
 									scope.reslist=data;
 									scope.ngModel=data[0].zmw;
+									scope.timeZone=data[0].tz;
+									console.log(scope);
 								})
 						},300)
 					}
@@ -151,6 +165,7 @@ myApp.controller("mainController",["$scope","$timeout","Weather","UserService",f
 
 	var updateTime=function(){
 		$scope.data.raw=new Date();
+		$scope.data.tz=new Date(new Date().toLocaleString("en-US",{timeZone:user.timeZone}));
 		$timeout(updateTime,1000);
 	}
 
