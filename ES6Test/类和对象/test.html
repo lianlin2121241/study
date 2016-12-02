@@ -1,0 +1,34 @@
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		'use strict';
+
+		/*var Animal=(function(name) {
+			function MyConstructor (name) {
+				this.name=name;
+			}
+			MyConstructor.prototype.speak=function() {
+				console.log(this.name+" makes a noise.");
+			}
+			return MyConstructor;
+		})()*/
+
+
+		class Animal{
+			constructor(name){
+				this.name=name;
+			}
+			speak(){
+				console.log(`${this.name} makes a noise`);
+			}
+		}
+
+		var animal=new Animal("animal");
+		animal.speak();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

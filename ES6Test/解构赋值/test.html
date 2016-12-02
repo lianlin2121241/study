@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		'use strict';
+
+		/*var array=[1,2,3,4];
+		var first=array[0];
+		var third=array[2];
+		console.log(first,third);*/
+
+		const array=[1,2,3,4];
+		const [first,,third]=array;
+		console.log(first,third);
+
+		//翻转赋值
+		let firstVal="first";
+		let lastVal="last";
+
+		[firstVal,lastVal]=[lastVal,firstVal];
+		console.log(firstVal,lastVal);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

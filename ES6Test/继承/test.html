@@ -1,0 +1,53 @@
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		'use strict';
+
+		/*var Animal=(function() {
+			function MyConstructor (name) {
+				this.name=name;
+			}
+			MyConstructor.prototype.speak=function() {
+				console.log(this.name+" makes a noise.");
+			}
+			return MyConstructor;
+		})()
+
+		var Lion=(function() {
+			function MyConstructor (name) {
+				Animal.call(this,name);
+			}
+			MyConstructor.prototype=Object.create(Animal.prototype);
+			MyConstructor.prototype.speak=function() {
+				Animal.prototype.speak.call(this);
+				console.log(this.name+" roars");
+			}
+			return MyConstructor;
+		})()*/
+
+
+		class Animal{
+			constructor(name){
+				this.name=name;
+			}
+			speak(){
+				console.log(`${this.name} makes a noise`);
+			}
+		}
+		
+		class Lion extends Animal{
+			speak(){
+				super.speak();
+				console.log(`${this.name} roars`)
+			}
+		}
+
+		var lion=new Lion("Simba");
+		lion.speak();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

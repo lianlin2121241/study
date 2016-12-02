@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		'use strict';
+
+		function createObj(){
+			const left=1,right=2,top=3,bottom=4;
+			return {left,right,top,bottom};//es6功能：将left:left简写为left
+		}
+
+		const {right,bottom}=createObj();
+		console.log(right,bottom);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
